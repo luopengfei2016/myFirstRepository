@@ -12,5 +12,4 @@ public class CustomThreadPool {
     private static final Integer maxSize = 5;
     private static final long keepAliveTime = 1;
     private static final BlockingQueue<Runnable> workQueue = null;
-    private static final Notify notify;
 }
