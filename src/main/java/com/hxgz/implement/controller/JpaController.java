@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Jackson
+ * @description springBoot 整合jpa测试
+ * @date 2019/6/10
+ */
 
 @RestController
 @RequestMapping("/talent")
