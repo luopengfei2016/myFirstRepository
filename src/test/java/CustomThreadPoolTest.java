@@ -1,5 +1,3 @@
-import sun.nio.ch.ThreadPool;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -11,7 +9,8 @@ import java.util.concurrent.BlockingQueue;
 public class CustomThreadPoolTest {
     public static void main(String[] args) throws InterruptedException{
 
-        BlockingQueue queue = new ArrayBlockingQueue(4);
+        //创建阻塞队列
+        BlockingQueue queue = new ArrayBlockingQueue(10);
 
     }
 

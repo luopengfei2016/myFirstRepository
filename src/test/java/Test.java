@@ -1,23 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-        int i=0;
-        Test a = new Test();
-        List<String> b = new ArrayList<>();
-        b.add("222");
-        a.method2(b);
+        String b = "123";
+        String a = "123";
+        System.out.println(a.equals(b));
+    }
 
-        a.method(i);
-        System.out.println(i);
-        System.out.println(b.size());
-    }
-    void method(int i){
-        i =3;
-    }
-    void method2(List<String> a){
-        a.add("111");
-    }
 }
 
