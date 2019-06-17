@@ -10,55 +10,41 @@ import java.net.Socket;
  * @date 2019/6/15
  */
 public class Receive implements Runnable {
-
     //输入流
-    private DataInputStream dis;
+    private  DataInputStream dis ;
     //线程标识
     private boolean isRunning = true;
-
     public Receive() {
     }
-
-    public Receive(Socket client) {
+    public Receive(Socket client){
         try {
             dis = new DataInputStream(client.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            isRunning = false;
-            CloseUitl.closeAll();
+            isRunning =false;
+            CloseUtil.closeAll(dis);
         }
     }
-
     /**
-     * @param []
-     * @return java.lang.String
-     * @author Jackson
-     * @description //TODO 接收数据
-     * @date 2019/6/15
+     * 接收数据
+     * @return
      */
-    public String receive() {
-        String msg = "";
+    public String  receive(){
+        String msg ="";
         try {
-            msg = dis.readUTF();
+            msg=dis.readUTF();
         } catch (IOException e) {
             e.printStackTrace();
-            isRunning = false;
-            CloseUitl.closeAll();
+            isRunning =false;
+            CloseUtil.closeAll(dis);
         }
         return msg;
     }
-
-    /**
-     * @param []
-     * @return void
-     * @author Jackson
-     * @description //TODO 线程体
-     * @date 2019/6/15
-     */
     @Override
     public void run() {
-        while (isRunning) {
-            receive();
+        //线程体
+        while(isRunning){
+            System.out.println(receive());
         }
     }
 }

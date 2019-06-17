@@ -1,8 +1,4 @@
 package com.hxgz.chat;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,89 +12,88 @@ import java.util.List;
  */
 public class Server {
 
-    private static final Logger log = LoggerFactory.getLogger(Server.class);
-
     private List<MyChannel> all = new ArrayList<MyChannel>();
-
+    /**
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         new Server().start();
+
     }
-    public void start() throws IOException {
-        //创建服务器  指定端口号
-        ServerSocket socket = new ServerSocket(8888);
-        while (true){
-            //接收客户端连接  阻塞式的
-            Socket client = socket.accept();
-            log.info("一个客户端建立连接");
+
+    public void start() throws IOException{
+        ServerSocket server =new ServerSocket(9999);
+        while(true){
+            Socket client =server.accept();
             MyChannel channel = new MyChannel(client);
-            all.add(channel);
-            new Thread(channel).start();
+            all.add(channel);//统一管理
+            new Thread(channel).start(); //一条道路
         }
     }
+
     /**
+     * @author Jackson
      * 一个客户端 一条道路
      * 1、输入流
      * 2、输出流
-     * @author Administrator
-     *
+     * 3、接收数据
+     * 4、发送数据
+     * @description //TODO
+     * @date 2019/6/17
+     * @param
+     * @return
      */
     private class MyChannel implements Runnable{
-
-        private DataInputStream dis;
-        private DataOutputStream dos;
-        private boolean isRunning = true;
-
+        private DataInputStream dis ;
+        private DataOutputStream dos ;
+        private boolean isRunning =true;
         private String name;
-
-        public MyChannel(Socket client) {
+        public MyChannel(Socket client ) {
             try {
                 dis = new DataInputStream(client.getInputStream());
                 dos = new DataOutputStream(client.getOutputStream());
-
                 this.name =dis.readUTF();
                 this.send("欢迎您进入聊天室");
                 sendOthers(this.name+"进入了聊天室",true);
             } catch (IOException e) {
-                e.printStackTrace();
-                isRunning = false;
-                CloseUitl.closeAll();
+                //e.printStackTrace();
+                CloseUtil.closeAll(dis,dos);
+                isRunning =false;
             }
         }
         /**
-         * @author Jackson
-         * @description //TODO 读取数据
-         * @date 2019/6/16
-         * @param []
-         * @return void
+         * 读取数据
+         * @return
          */
-        public String receive(){
-            String msg = "";
+        private String receive(){
+            String msg ="";
             try {
-                msg = dis.readUTF();
+                msg=dis.readUTF();
             } catch (IOException e) {
-                e.printStackTrace();
-                isRunning = false;
-                CloseUitl.closeAll();
+                //e.printStackTrace();
+                CloseUtil.closeAll(dis);
+                isRunning =false;
+                all.remove(this); //移除自身
             }
             return msg;
         }
+
         /**
-         * @author Jackson
-         * @description //TODO 发送数据
-         * @date 2019/6/16
-         * @param []
-         * @return void
+         * 发送数据
          */
-        public void send(String msg){
-            if(null!=msg&&!"".equals(msg)){
-                try {
-                    dos.writeUTF(msg);
-                    dos.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    isRunning = false;
-                    CloseUitl.closeAll();
-                }
+        private void send(String msg){
+            if(null==msg ||msg.equals("")){
+                return ;
+            }
+            try {
+                dos.writeUTF(msg);
+                dos.flush();
+            } catch (IOException e) {
+                //e.printStackTrace();
+                CloseUtil.closeAll(dos);
+                isRunning =false;
+                all.remove(this); //移除自身
             }
         }
 
@@ -132,9 +127,10 @@ public class Server {
             }
         }
 
+
         @Override
         public void run() {
-            while (isRunning){
+            while(isRunning){
                 sendOthers(receive(),false);
             }
         }
