@@ -54,7 +54,7 @@ public class Server {
                 dis = new DataInputStream(client.getInputStream());
                 dos = new DataOutputStream(client.getOutputStream());
                 this.name =dis.readUTF();
-                this.send("欢迎您进入聊天室");
+                send("欢迎您进入聊天室");
                 sendOthers(this.name+"进入了聊天室",true);
             } catch (IOException e) {
                 //e.printStackTrace();

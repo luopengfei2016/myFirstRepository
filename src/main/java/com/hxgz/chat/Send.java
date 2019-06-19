@@ -21,6 +21,7 @@ public class Send implements Runnable{
     private boolean isRunning =true;
     //名称
     private String name;
+
     public Send() {
         console =new BufferedReader(new InputStreamReader(System.in));
     }
