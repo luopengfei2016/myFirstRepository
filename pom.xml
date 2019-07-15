@@ -231,7 +231,14 @@
             <classifier>jdk15</classifier>
         </dependency>
         <!-- Json依赖架包下载 -->
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
